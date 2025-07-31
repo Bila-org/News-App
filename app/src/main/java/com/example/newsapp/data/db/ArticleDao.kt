@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ArticleDao {
     @Upsert()
-    suspend fun upsert(article: Article): Long
+    suspend fun upsert(article: Article)
 
     @Upsert()
     suspend fun upsertAll(articles: List<Article>)

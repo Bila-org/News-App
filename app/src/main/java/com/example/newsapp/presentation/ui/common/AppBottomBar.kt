@@ -1,4 +1,4 @@
-package com.example.newsapp
+package com.example.newsapp.presentation.ui.common
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -13,7 +13,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.newsapp.presentation.NavigationItem
 import com.example.newsapp.presentation.navigationItems
-
 
 
 @Composable

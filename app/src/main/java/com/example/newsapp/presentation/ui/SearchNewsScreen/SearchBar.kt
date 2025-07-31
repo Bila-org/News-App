@@ -1,4 +1,4 @@
-package com.example.newsapp.presentation.ui
+package com.example.newsapp.presentation.ui.SearchNewsScreen
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions

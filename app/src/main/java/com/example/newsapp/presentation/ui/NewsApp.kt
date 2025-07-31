@@ -1,13 +1,19 @@
-package com.example.newsapp
+package com.example.newsapp.presentation.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
@@ -20,12 +26,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.presentation.NewsViewModel
+import com.example.newsapp.presentation.util.OpenArticleInBrowser
 import com.example.newsapp.presentation.Screen
-import com.example.newsapp.presentation.ui.HeadlinesNewsScreen
-import com.example.newsapp.presentation.ui.SavedNewsScreen
-import com.example.newsapp.presentation.ui.SearchNewsScreen
+import com.example.newsapp.presentation.ui.HeadlineScreen.HeadlinesNewsScreen
+import com.example.newsapp.presentation.ui.SavedNewsScreen.SavedNewsScreen
+import com.example.newsapp.presentation.ui.SearchNewsScreen.SearchNewsScreen
+import com.example.newsapp.presentation.ui.common.AppBottomNavigationBar
 import com.example.newsapp.ui.theme.NewsAppTheme
-import com.example.newsapp.util.OpenArticleInBrowser
+import kotlinx.coroutines.launch
 
 class NewsApp {
 }
@@ -37,12 +45,15 @@ fun NewsAppMain(
 ) {
     val navController = rememberNavController()
 
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = "Newsroom",
+                        text = "Akhbaar",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         fontStyle = FontStyle.Italic,
@@ -70,6 +81,9 @@ fun NewsAppMain(
                 },
                 navController = navController
             )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         }
     ) { innerPadding ->
 
@@ -96,7 +110,15 @@ fun NewsAppMain(
                         */
                     },
                     onBookmarkClick = { article ->
-                        viewModel.toggleBookmarkArticle(article)
+                        viewModel.addToBookmarkArticle(article)
+                        scope.launch {
+                            snackbarHostState
+                                .showSnackbar(
+                                    message = "Added to bookmark news",
+                                    duration = SnackbarDuration.Short
+                                )
+                        }
+//                        viewModel.toggleBookmarkArticle(article)
                     }
                 )
             }
@@ -105,12 +127,48 @@ fun NewsAppMain(
                 val viewModel: NewsViewModel = hiltViewModel()
                 val context = LocalContext.current
                 SavedNewsScreen(
-                    viewModel,
+                    uiState = viewModel.uiState.value,
                     onArticleClick = { article ->
                         OpenArticleInBrowser.launch(context, article.url)
                     },
                     onBookmarkClick = { article ->
-                        viewModel.toggleBookmarkArticle(article)
+                        viewModel.deleteArticle(article)
+                        scope.launch {
+                            val result = snackbarHostState
+                                .showSnackbar(
+                                    message = "Bookmark news is deleted",
+                                    actionLabel = "Undo",
+                                    duration = SnackbarDuration.Short
+                                )
+                            when (result) {
+                                SnackbarResult.ActionPerformed -> {
+                                    viewModel.addToBookmarkArticle(article)
+                                }
+
+                                SnackbarResult.Dismissed -> {
+                                }
+                            }
+                        }
+//                        viewModel.toggleBookmarkArticle(article)
+                    },
+                    swipeToDelete = { article ->
+                        viewModel.deleteArticle(article)
+                        scope.launch {
+                            val result = snackbarHostState
+                                .showSnackbar(
+                                    message = "Bookmark news is deleted",
+                                    actionLabel = "Undo",
+                                    duration = SnackbarDuration.Short
+                                )
+                            when (result) {
+                                SnackbarResult.ActionPerformed -> {
+                                    viewModel.addToBookmarkArticle(article)
+                                }
+
+                                SnackbarResult.Dismissed -> {
+                                }
+                            }
+                        }
                     }
                 )
             }
@@ -119,12 +177,23 @@ fun NewsAppMain(
                 val viewModel: NewsViewModel = hiltViewModel()
                 val context = LocalContext.current
                 SearchNewsScreen(
-                    viewModel,
+                    uiState = viewModel.uiState.value,
                     onArticleClick = { article ->
                         OpenArticleInBrowser.launch(context, article.url)
                     },
                     onBookmarkClick = { article ->
-                        viewModel.toggleBookmarkArticle(article)
+                        viewModel.addToBookmarkArticle(article)
+                        scope.launch {
+                            snackbarHostState
+                                .showSnackbar(
+                                    message = "Added to bookmark news",
+                                    duration = SnackbarDuration.Short
+                                )
+                        }
+//                        viewModel.toggleBookmarkArticle(article)
+                    },
+                    onSearchQuery = { query ->
+                        viewModel.searchForNews(query)
                     }
                 )
             }

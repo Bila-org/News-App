@@ -82,6 +82,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // For work manager dagger hilt
+    implementation("androidx.hilt:hilt-work:1.2.0")
+
     // Lazily load Paging
     implementation("androidx.paging:paging-compose:3.3.6")
 

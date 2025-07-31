@@ -1,4 +1,4 @@
-package com.example.newsapp.presentation.ui
+package com.example.newsapp.presentation.ui.common
 
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -17,8 +17,6 @@ fun WebViewScreen(
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-
     val context = LocalContext.current
     val webView = remember {
         WebView(context).apply {

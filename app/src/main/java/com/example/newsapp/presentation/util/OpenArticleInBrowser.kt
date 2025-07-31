@@ -1,4 +1,4 @@
-package com.example.newsapp.util
+package com.example.newsapp.presentation.util
 
 import android.content.ActivityNotFoundException
 import android.content.Context
