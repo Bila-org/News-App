@@ -7,12 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.newsapp.data.Article
-import com.example.newsapp.presentation.NewsUiState
 import com.example.newsapp.presentation.ui.common.ArticleList
 
 @Composable
 fun SavedNewsScreen(
-    uiState: NewsUiState,
+    uiState: SavedUiState,
     onArticleClick: (Article) -> Unit,
     onBookmarkClick: (Article) -> Unit,
     swipeToDelete: (Article) -> Unit,

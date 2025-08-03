@@ -1,36 +1,48 @@
-package com.example.newsapp.presentation.ui.SearchNewsScreen
+package com.example.newsapp.presentation.ui.HeadlineScreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.NavBackStackEntry
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.newsapp.data.Article
-import com.example.newsapp.presentation.NewsUiState
 import com.example.newsapp.presentation.ui.common.ArticleList
 
 @Composable
-fun SearchNewsScreen(
-    uiState: NewsUiState,
+fun HeadlinesNewsScreen(
+    viewModel: HeadlinesViewModel,
+    backStackEntry: NavBackStackEntry,
     onArticleClick: (Article) -> Unit,
     onBookmarkClick: (Article) -> Unit,
-    onSearchQuery: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val uiState = viewModel.uiState.value
+//    val articles = uiState.topHeadlines
+
+    DisposableEffect(backStackEntry) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_START) {
+                viewModel.getTopHeadlines()
+            }
+        }
+        backStackEntry.lifecycle.addObserver(observer)
+        onDispose { backStackEntry.lifecycle.removeObserver(observer) }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Center
     ) {
-        SearchBar(
-            onSearch = {
-                onSearchQuery(it)
-            }
-        )
-        uiState.searchedNews?.let {
+        uiState.topHeadlines?.let {
             val articles = it.collectAsLazyPagingItems()
             ArticleList(
                 articles = articles,

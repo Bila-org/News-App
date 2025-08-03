@@ -27,11 +27,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.R
-import com.example.newsapp.presentation.NewsViewModel
 import com.example.newsapp.presentation.Screen
 import com.example.newsapp.presentation.ui.HeadlineScreen.HeadlinesNewsScreen
+import com.example.newsapp.presentation.ui.HeadlineScreen.HeadlinesViewModel
 import com.example.newsapp.presentation.ui.SavedNewsScreen.SavedNewsScreen
+import com.example.newsapp.presentation.ui.SavedNewsScreen.SavedViewModel
 import com.example.newsapp.presentation.ui.SearchNewsScreen.SearchNewsScreen
+import com.example.newsapp.presentation.ui.SearchNewsScreen.SearchViewModel
 import com.example.newsapp.presentation.ui.common.AppBottomNavigationBar
 import com.example.newsapp.presentation.util.OpenArticleInBrowser
 import com.example.newsapp.ui.theme.NewsAppTheme
@@ -95,7 +97,7 @@ fun NewsAppMain(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Headlines.route) { backStackEntry ->
-                val viewModel: NewsViewModel = hiltViewModel(backStackEntry)
+                val viewModel: HeadlinesViewModel = hiltViewModel(backStackEntry)
                 val context = LocalContext.current
                 HeadlinesNewsScreen(
                     viewModel,
@@ -126,7 +128,7 @@ fun NewsAppMain(
             }
 
             composable(Screen.Saved.route) {
-                val viewModel: NewsViewModel = hiltViewModel()
+                val viewModel: SavedViewModel = hiltViewModel()
                 val context = LocalContext.current
                 SavedNewsScreen(
                     uiState = viewModel.uiState.value,
@@ -176,7 +178,7 @@ fun NewsAppMain(
             }
 
             composable(Screen.Search.route) {
-                val viewModel: NewsViewModel = hiltViewModel()
+                val viewModel: SearchViewModel = hiltViewModel()
                 val context = LocalContext.current
                 SearchNewsScreen(
                     uiState = viewModel.uiState.value,
@@ -233,5 +235,3 @@ fun NewsAppMainPreview() {
         NewsAppMain()
     }
 }
-
-
