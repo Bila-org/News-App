@@ -115,7 +115,7 @@ fun NewsCard(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .fillMaxWidth()
-                        .height(50.dp)
+                        .height(80.dp)
                         .background(
                             brush = Brush.verticalGradient(
                                 colors = gradientColors,

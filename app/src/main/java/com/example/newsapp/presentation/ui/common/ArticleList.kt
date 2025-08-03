@@ -103,24 +103,20 @@ fun ArticleList(
         } else {
             itemsIndexed(
                 items = articles,
-                key = {_ , article ->
+                key = { _, article ->
                     article.url
                 }
-//                count = articles.count(),
-//                key = {
-//                    articles.indexOf(articles[it])
-//                }
             ) { index, article ->
                 NewsCard(
-                    article = articles[index],
+                    article = article,
                     onArticleClick = {
-                        onArticleClick(articles[index])
+                        onArticleClick(article)
                     },
                     onBookmarkClick = {
-                        onBookmarkClick(articles[index])
+                        onBookmarkClick(article)
                     },
                     swipeToDelete = {
-                        swipeToDelete(articles[index])
+                        swipeToDelete(article)
                     }
                 )
             }

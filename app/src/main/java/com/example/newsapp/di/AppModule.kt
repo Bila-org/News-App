@@ -1,6 +1,7 @@
 package com.example.newsapp.di
 
 import android.app.Application
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
@@ -44,4 +45,10 @@ object AppModule {
         return NewsRepository(db, sharedPreferences)
     }
 
+
+    @Provides
+    @Singleton
+    fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager{
+        return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
 }

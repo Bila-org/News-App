@@ -29,15 +29,14 @@ fun SearchBar(
     modifier: Modifier = Modifier
 ) {
     var textState = rememberSaveable { mutableStateOf("") }
-
     val currentSearch by rememberUpdatedState(onSearch)
 
     LaunchedEffect(Unit) {
-            snapshotFlow { textState.value }
-                .debounce(500L)
-                .collect {
-                    currentSearch(it)
-                }
+        snapshotFlow { textState.value }
+            .debounce(500L)
+            .collect {
+                currentSearch(it)
+            }
     }
 
     TextField(
@@ -56,7 +55,7 @@ fun SearchBar(
         },
         placeholder = {
             Text(
-                text = "Search",
+                text = "Search News",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onBackground
             )

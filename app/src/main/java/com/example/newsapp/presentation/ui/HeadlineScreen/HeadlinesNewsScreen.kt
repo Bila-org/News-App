@@ -53,13 +53,3 @@ fun HeadlinesNewsScreen(
         }
     }
 }
-
-
-//@Preview(
-//    showBackground = true,
-//    showSystemUi = true
-//)
-//@Composable
-//fun HeadlinesNewsPreview() {
-//    HeadlinesNews()
-//}

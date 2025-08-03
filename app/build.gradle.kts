@@ -84,6 +84,7 @@ dependencies {
 
     // For work manager dagger hilt
     implementation("androidx.hilt:hilt-work:1.2.0")
+    implementation("androidx.work:work-runtime-ktx:2.10.2")
 
     // Lazily load Paging
     implementation("androidx.paging:paging-compose:3.3.6")

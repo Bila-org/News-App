@@ -1,5 +1,6 @@
 package com.example.newsapp.presentation.ui.common
 
+
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -9,10 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.presentation.NavigationItem
 import com.example.newsapp.presentation.navigationItems
+import com.example.newsapp.ui.theme.NewsAppTheme
 
 
 @Composable
@@ -71,5 +75,19 @@ fun AppBottomNavigationBar(
                     )
             )
         }
+    }
+}
+
+
+@Preview(
+    showBackground = true,
+)
+@Composable
+fun AppBottomNavigationBarPreview() {
+    NewsAppTheme(darkTheme = false) {
+        AppBottomNavigationBar(
+            onClick = { },
+            navController = rememberNavController()
+        )
     }
 }

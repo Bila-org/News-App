@@ -1,18 +1,30 @@
 package com.example.newsapp
 
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import com.example.newsapp.presentation.ui.NewsAppMain
+import androidx.compose.runtime.LaunchedEffect
+import androidx.core.content.ContextCompat
 import com.example.newsapp.presentation.NewsViewModel
+import com.example.newsapp.presentation.ui.NewsAppMain
 import com.example.newsapp.ui.theme.NewsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val viewModel: NewsViewModel by viewModels()
+  //  private val viewModel: NewsViewModel by viewModels()
+
+    private val notificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ){
+
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +32,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            //val viewModel : NewsViewModel() =  hiltViewModel()
+            // Request notification permission
+            LaunchedEffect(Unit) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (ContextCompat.checkSelfPermission(
+                            this@MainActivity,
+                            android.Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        requestPermissions(
+                        arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                        1
+                    )
+//                        notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                }
+            }
+
 
             NewsAppTheme(dynamicColor = false) {
                 NewsAppMain()

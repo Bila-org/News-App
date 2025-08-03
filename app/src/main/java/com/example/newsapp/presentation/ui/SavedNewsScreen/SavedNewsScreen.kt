@@ -29,17 +29,6 @@ fun SavedNewsScreen(
             onArticleClick = onArticleClick,
             onBookmarkClick = onBookmarkClick,
             swipeToDelete = swipeToDelete,
-
         )
     }
 }
-
-
-//@Preview(
-//    showBackground = true,
-//    showSystemUi = true
-//)
-//@Composable
-//fun SavedNewsPreview() {
-//    SavedNews()
-//}

@@ -23,7 +23,7 @@ fun SearchNewsScreen(
         modifier = modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
         SearchBar(
             onSearch = {
@@ -40,26 +40,3 @@ fun SearchNewsScreen(
         }
     }
 }
-
-
-//        Column(
-//            modifier = modifier
-//                .fillMaxSize(),
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//            verticalArrangement = Arrangement.Center
-//        ) {
-//            Text(
-//                text = "Search News",
-//                style = MaterialTheme.typography.displayMedium
-//            )
-//        }
-
-
-//    @Preview(
-//        showBackground = true,
-//        showSystemUi = true
-//    )
-//    @Composable
-//    fun SearchNewsPreview() {
-//        SearchNews()
-//    }

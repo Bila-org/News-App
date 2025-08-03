@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,13 +26,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.newsapp.R
 import com.example.newsapp.presentation.NewsViewModel
-import com.example.newsapp.presentation.util.OpenArticleInBrowser
 import com.example.newsapp.presentation.Screen
 import com.example.newsapp.presentation.ui.HeadlineScreen.HeadlinesNewsScreen
 import com.example.newsapp.presentation.ui.SavedNewsScreen.SavedNewsScreen
 import com.example.newsapp.presentation.ui.SearchNewsScreen.SearchNewsScreen
 import com.example.newsapp.presentation.ui.common.AppBottomNavigationBar
+import com.example.newsapp.presentation.util.OpenArticleInBrowser
 import com.example.newsapp.ui.theme.NewsAppTheme
 import kotlinx.coroutines.launch
 
@@ -53,7 +55,7 @@ fun NewsAppMain(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Akhbaar",
+                        text = stringResource(R.string.app_title),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         fontStyle = FontStyle.Italic,

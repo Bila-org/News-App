@@ -54,8 +54,6 @@ class NewsRepository(
         return db.getArticleDao().getBookmarkedArticles()
     }
 
-//    fun getBookmarkedArticles() = db.getArticleDao().getBookmarkedArticles()
-
     suspend fun toggleBookmarkArticle(article: Article) {
         withContext(Dispatchers.IO) {
             db.getArticleDao().upsert(article.copy(isBookmarked = !article.isBookmarked))
