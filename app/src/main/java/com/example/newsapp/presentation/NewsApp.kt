@@ -27,15 +27,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.R
-import com.example.newsapp.presentation.Screen
-import com.example.newsapp.presentation.ui.HeadlineScreen.HeadlinesNewsScreen
-import com.example.newsapp.presentation.ui.HeadlineScreen.HeadlinesViewModel
-import com.example.newsapp.presentation.ui.SavedNewsScreen.SavedNewsScreen
-import com.example.newsapp.presentation.ui.SavedNewsScreen.SavedViewModel
-import com.example.newsapp.presentation.ui.SearchNewsScreen.SearchNewsScreen
-import com.example.newsapp.presentation.ui.SearchNewsScreen.SearchViewModel
-import com.example.newsapp.presentation.ui.common.AppBottomNavigationBar
-import com.example.newsapp.presentation.util.OpenArticleInBrowser
+import com.example.newsapp.presentation.common.components.Screen
+import com.example.newsapp.presentation.HeadlineScreen.HeadlinesNewsScreen
+import com.example.newsapp.presentation.HeadlineScreen.HeadlinesViewModel
+import com.example.newsapp.presentation.SavedNewsScreen.SavedNewsScreen
+import com.example.newsapp.presentation.SavedNewsScreen.SavedViewModel
+import com.example.newsapp.presentation.SearchNewsScreen.SearchNewsScreen
+import com.example.newsapp.presentation.SearchNewsScreen.SearchViewModel
+import com.example.newsapp.presentation.common.components.AppBottomNavigationBar
+import com.example.newsapp.presentation.common.components.OpenArticleInBrowser
 import com.example.newsapp.ui.theme.NewsAppTheme
 import kotlinx.coroutines.launch
 
@@ -104,14 +104,6 @@ fun NewsAppMain(
                     backStackEntry,
                     onArticleClick = { article ->
                         OpenArticleInBrowser.launch(context, article.url)
-                        /*  // Code for calling WebViewScreen from the HeadlinesNewsScreen
-                        article ->
-                        val encodedUrl =
-                            URLEncoder.encode(article.url, StandardCharsets.UTF_8.toString())
-                        navController.navigate(
-                            "${Screen.DetailNews.route}/${encodedUrl}"
-                        )
-                        */
                     },
                     onBookmarkClick = { article ->
                         viewModel.addToBookmarkArticle(article)
@@ -201,37 +193,6 @@ fun NewsAppMain(
                     }
                 )
             }
-            /* // WebView Screen composable (WebView is not recommended in android app)
-            composable(
-                route = "${Screen.DetailNews.route}/{articleUrl}",
-                arguments = listOf(
-                    navArgument("articleUrl") {
-                        type = NavType.StringType
-                    }
-                )
-            ) {
-                val encodedUrl = it.arguments?.getString("articleUrl") ?: ""
-                val articleUrl = URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8.toString())
-                WebViewScreen(
-                    articleUrl = articleUrl,
-                    onBackPressed = {
-                        navController.navigateUp()
-                    }
-                )
-            }
-            */
         }
-    }
-}
-
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-fun NewsAppMainPreview() {
-    NewsAppTheme(darkTheme = false) {
-        NewsAppMain()
     }
 }

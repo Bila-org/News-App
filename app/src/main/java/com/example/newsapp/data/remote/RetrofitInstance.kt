@@ -1,5 +1,6 @@
 package com.example.newsapp.data.remote
 
+import com.example.newsapp.data.remote.api.NewsApi
 import com.example.newsapp.util.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

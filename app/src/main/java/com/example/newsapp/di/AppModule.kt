@@ -5,8 +5,8 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import com.example.newsapp.data.NewsRepository
-import com.example.newsapp.data.db.ArticleDatabase
+import com.example.newsapp.data.repository.NewsRepository
+import com.example.newsapp.data.local.ArticleDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
