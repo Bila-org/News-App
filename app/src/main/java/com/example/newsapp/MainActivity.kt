@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-
             NewsAppTheme(dynamicColor = false) {
                 NewsAppMain()
             }

@@ -1,5 +1,6 @@
 package com.example.newsapp.presentation.notification
 
+
 import android.R
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -13,7 +14,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.newsapp.MainActivity
 
-class NewsNotificationWorker (
+class NewsNotificationWorker(
     context: Context,
     workerParams: WorkerParameters,
 ) : CoroutineWorker(context, workerParams) {
@@ -23,16 +24,16 @@ class NewsNotificationWorker (
 
     override suspend fun doWork(): Result {
         Log.d("Worker", "doWork executed")
-        return if(canShowNotification()){
+        return if (canShowNotification()) {
             try {
                 showNotification()
                 Log.d("Worker", "Notification shown successfully")
                 Result.success()
             } catch (e: Exception) {
-                Log.e("Worker","Error showing notification: ${e.message}")
+                Log.e("Worker", "Error showing notification: ${e.message}")
                 Result.failure()
             }
-        }else {
+        } else {
             Log.d("Worker", "Notification permission not granted")
             Result.success()
         }
@@ -67,18 +68,16 @@ class NewsNotificationWorker (
     }
 
     private fun createNotificationChannel(channelId: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "News Channel",
-                NotificationManager.IMPORTANCE_DEFAULT
-            ).apply {
-                description = "News notifications"
+        val channel = NotificationChannel(
+            channelId,
+            "News Channel",
+            NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+            description = "News notifications"
 //                enableVibration(true)
 //                setShowBadge(true)
-            }
-            notificationManager.createNotificationChannel(channel)
         }
+        notificationManager.createNotificationChannel(channel)
     }
 
     private fun canShowNotification(): Boolean {
@@ -86,6 +85,4 @@ class NewsNotificationWorker (
             notificationManager.areNotificationsEnabled()
         } else true
     }
-
-
 }

@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapp.data.dto.Article
-import com.example.newsapp.data.repository.NewsRepository
+import com.example.newsapp.domain.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -60,9 +60,9 @@ class SavedViewModel @Inject constructor(
         }
     }
 
-//    fun clearError() {
-//        _uiState.update {
-//            it.copy(errorMessage = null)
-//        }
-//    }
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(
+            errorMessage = null
+        )
+    }
 }

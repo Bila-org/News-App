@@ -1,4 +1,4 @@
-package com.example.newsapp.presentation.common.components
+package com.example.newsapp.presentation.SearchNewsScreen
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
@@ -28,7 +28,7 @@ fun SearchBar(
     onSearch: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var textState = rememberSaveable { mutableStateOf("") }
+    val textState = rememberSaveable { mutableStateOf("") }
     val currentSearch by rememberUpdatedState(onSearch)
 
     LaunchedEffect(Unit) {

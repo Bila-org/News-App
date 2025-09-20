@@ -20,13 +20,13 @@ class NewsApplication : Application() {
             .setRequiresBatteryNotLow(true)
             .build()
 
-        val notificationWorkRequest =
-            PeriodicWorkRequestBuilder<NewsNotificationWorker>(
-                1,
-                TimeUnit.DAYS
-            )
-                .setConstraints(constraints)
-                .build()
+        val notificationWorkRequest = PeriodicWorkRequestBuilder<NewsNotificationWorker>(
+            1,
+            TimeUnit.DAYS,
+        )
+            .setConstraints(constraints)
+            .setInitialDelay(5, TimeUnit.MINUTES)
+            .build()
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "news_notification",

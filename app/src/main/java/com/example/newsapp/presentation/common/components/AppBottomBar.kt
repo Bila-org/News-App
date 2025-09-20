@@ -27,8 +27,8 @@ fun AppBottomNavigationBar(
 
     NavigationBar(
         modifier = Modifier,
-        containerColor = MaterialTheme.colorScheme.surfaceContainer, // Background color
-        contentColor = MaterialTheme.colorScheme.onSurface // Default content color)
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        contentColor = MaterialTheme.colorScheme.onSurface
     ) {
         navigationItems.forEach { screen ->
             NavigationBarItem(

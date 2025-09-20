@@ -4,11 +4,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
+import androidx.paging.LoadType
 import androidx.paging.compose.LazyPagingItems
 import com.example.newsapp.data.dto.Article
 
@@ -20,9 +27,16 @@ fun ArticleList(
     onBookmarkClick: (Article) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val handlePagingResult = handlePagingResult(articles)
 
-    if (handlePagingResult) {
+    var errorType: LoadType? = null
+    var errorMessage: String? = null
+
+    handlePagingResult(articles) { error, type ->
+        errorType = type
+        errorMessage = error.localizedMessage
+    }
+
+    if (errorType == null) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
@@ -46,32 +60,37 @@ fun ArticleList(
                 }
             }
         }
-    }
-}
-
-
-fun handlePagingResult(articles: LazyPagingItems<Article>): Boolean {
-    val loadState = articles.loadState
-    val error = when {
-        loadState.refresh is LoadState.Error ->
-            loadState.refresh as LoadState.Error
-
-        loadState.prepend is LoadState.Error ->
-            loadState.prepend as LoadState.Error
-
-        loadState.append is LoadState.Error ->
-            loadState.append as LoadState.Error
-
-        else -> null
-    }
-
-    return when {
-        error != null -> {
-            false
-        }
-
-        else -> {
-            true
+    } else {
+        when (errorType) {
+            LoadType.REFRESH -> {
+                Text(
+                    text = "Unable to refresh content\n$errorMessage",
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center,
+                    lineHeight = 20.sp
+                )
+            }
+            LoadType.PREPEND -> {
+                Text(
+                    text = "Couldn't load previous items\n$errorMessage",
+                    color = Color(0xFFF57C00), // Orange color for warning
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Center,
+                    fontStyle = FontStyle.Italic
+                )
+            }
+            LoadType.APPEND -> {
+                Text(
+                    text = "Failed to load more content\n$errorMessage",
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
@@ -124,5 +143,28 @@ fun ArticleList(
     }
 }
 
+fun handlePagingResult(
+    articles: LazyPagingItems<Article>,
+    onError: (Throwable, LoadType) -> Unit
+) {
+    val loadState = articles.loadState
 
+    listOf(
+        LoadType.REFRESH to loadState.refresh,
+        LoadType.PREPEND to loadState.prepend,
+        LoadType.APPEND to loadState.append
+    ).forEach { (type, state) ->
+        if (state is LoadState.Error) {
+            onError(state.error, type)
+        }
+    }
+}
 
+fun handlePagingResult(articles: LazyPagingItems<Article>): Boolean {
+    val loadState = articles.loadState
+    return listOf(
+        loadState.refresh,
+        loadState.prepend,
+        loadState.append
+    ).filterIsInstance<LoadState.Error>().isEmpty()
+}

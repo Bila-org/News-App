@@ -8,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.newsapp.data.dto.Article
-import com.example.newsapp.presentation.common.components.SearchBar
 import com.example.newsapp.presentation.common.components.ArticleList
 
 @Composable

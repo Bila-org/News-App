@@ -113,8 +113,8 @@ dependencies {
     ksp("androidx.room:room-compiler:$room_version")
     //kapt("androidx.room:room-compiler:$room_version")
     implementation(kotlin("stdlib-jdk8"))
-    // Dagger-Hilt dependency
 
+    // Dagger-Hilt dependency
     implementation("com.google.dagger:hilt-android:2.56.2")
     ksp("com.google.dagger:hilt-android-compiler:2.56.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")

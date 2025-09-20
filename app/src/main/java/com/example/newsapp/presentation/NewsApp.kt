@@ -20,14 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.R
-import com.example.newsapp.presentation.common.components.Screen
 import com.example.newsapp.presentation.HeadlineScreen.HeadlinesNewsScreen
 import com.example.newsapp.presentation.HeadlineScreen.HeadlinesViewModel
 import com.example.newsapp.presentation.SavedNewsScreen.SavedNewsScreen
@@ -36,21 +34,17 @@ import com.example.newsapp.presentation.SearchNewsScreen.SearchNewsScreen
 import com.example.newsapp.presentation.SearchNewsScreen.SearchViewModel
 import com.example.newsapp.presentation.common.components.AppBottomNavigationBar
 import com.example.newsapp.presentation.common.components.OpenArticleInBrowser
-import com.example.newsapp.ui.theme.NewsAppTheme
+import com.example.newsapp.presentation.common.components.Screen
 import kotlinx.coroutines.launch
-
-class NewsApp {
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsAppMain(
     modifier: Modifier = Modifier
 ) {
-    val navController = rememberNavController()
-
-    val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val navController = rememberNavController()
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -114,7 +108,6 @@ fun NewsAppMain(
                                     duration = SnackbarDuration.Short
                                 )
                         }
-//                        viewModel.toggleBookmarkArticle(article)
                     }
                 )
             }
@@ -145,7 +138,6 @@ fun NewsAppMain(
                                 }
                             }
                         }
-//                        viewModel.toggleBookmarkArticle(article)
                     },
                     swipeToDelete = { article ->
                         viewModel.deleteArticle(article)
@@ -186,7 +178,6 @@ fun NewsAppMain(
                                     duration = SnackbarDuration.Short
                                 )
                         }
-//                        viewModel.toggleBookmarkArticle(article)
                     },
                     onSearchQuery = { query ->
                         viewModel.searchForNews(query)

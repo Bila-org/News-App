@@ -5,8 +5,9 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import com.example.newsapp.data.repository.NewsRepository
 import com.example.newsapp.data.local.ArticleDatabase
+import com.example.newsapp.data.repository.NewsRepositoryImp
+import com.example.newsapp.domain.NewsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,14 +42,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNewsRepository(db: ArticleDatabase, sharedPreferences: SharedPreferences): NewsRepository {
-        return NewsRepository(db, sharedPreferences)
+    fun provideNewsRepository(
+        db: ArticleDatabase,
+        sharedPreferences: SharedPreferences
+    ): NewsRepository {
+        return NewsRepositoryImp(db, sharedPreferences)
     }
 
 
     @Provides
     @Singleton
-    fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager{
+    fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager {
         return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 }

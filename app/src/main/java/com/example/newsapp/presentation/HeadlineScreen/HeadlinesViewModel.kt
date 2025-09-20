@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.newsapp.data.dto.Article
-import com.example.newsapp.data.repository.NewsRepository
+import com.example.newsapp.domain.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -35,6 +35,9 @@ class HeadlinesViewModel @Inject constructor(
 
 
     fun getTopHeadlines(countryCode: String = "us") {
+        _uiState.value = _uiState.value.copy(
+            isLoading = true
+        )
         val articles = newsRepository.getTopHeadlines(countryCode)
             .cachedIn(viewModelScope)
         _uiState.value = _uiState.value.copy(
@@ -55,9 +58,9 @@ class HeadlinesViewModel @Inject constructor(
         }
     }
 
-//    fun clearError() {
-//        _uiState.update {
-//            it.copy(errorMessage = null)
-//        }
-//    }
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(
+            errorMessage = null
+        )
+    }
 }

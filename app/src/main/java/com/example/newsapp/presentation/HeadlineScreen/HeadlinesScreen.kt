@@ -24,7 +24,6 @@ fun HeadlinesNewsScreen(
 ) {
 
     val uiState = viewModel.uiState.value
-//    val articles = uiState.topHeadlines
 
     DisposableEffect(backStackEntry) {
         val observer = LifecycleEventObserver { _, event ->

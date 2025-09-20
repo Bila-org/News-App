@@ -7,17 +7,21 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
 
 
-
 object OpenArticleInBrowser {
     fun launch(context: Context, articleUrl: String) {
-        try{
+        try {
             openCustomTab(context, articleUrl)
-        } catch (e: ActivityNotFoundException){
+        } catch (e: ActivityNotFoundException) {
             openArticleInBrowserUsingIntent(context, articleUrl)
         }
     }
 }
 
+fun openCustomTab(context: Context, articleUrl: String) {
+    CustomTabsIntent.Builder().build().apply {
+        launchUrl(context, articleUrl.toUri())
+    }
+}
 
 fun openArticleInBrowserUsingIntent(context: Context, articleUrl: String) {
     Intent(Intent.ACTION_VIEW).also {
@@ -27,11 +31,3 @@ fun openArticleInBrowserUsingIntent(context: Context, articleUrl: String) {
         }
     }
 }
-
-fun openCustomTab(context: Context, articleUrl: String) {
-    CustomTabsIntent.Builder().build().apply{
-        launchUrl(context, articleUrl.toUri())
-    }
-}
-
-

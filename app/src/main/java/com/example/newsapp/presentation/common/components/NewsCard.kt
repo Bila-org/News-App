@@ -75,6 +75,7 @@ fun NewsCard(
                     onDragEnd = {
                         if (offsetX < -100f) {
                             swipeToDelete()
+                            offsetX = 0f
                         } else
                             offsetX = 0f
                     }
@@ -93,9 +94,7 @@ fun NewsCard(
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface,
-                //contentColor = MaterialTheme.colorScheme.onSurface
             )
-
         ) {
             Box(
                 contentAlignment = Alignment.TopStart
@@ -109,8 +108,6 @@ fun NewsCard(
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
-
-
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
@@ -122,7 +119,6 @@ fun NewsCard(
                                 startY = 0f,
                                 endY = Float.POSITIVE_INFINITY
                             )
-                            //    MaterialTheme.colorScheme.background
                         ),
                 )
 
@@ -136,13 +132,10 @@ fun NewsCard(
                         .align(Alignment.BottomEnd)
                         .fillMaxWidth()
                         .padding(6.dp),
-                    //.align(Alignment.End),
                     textAlign = TextAlign.Start,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-
-
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
@@ -157,19 +150,6 @@ fun NewsCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
-//                Spacer(modifier = Modifier.width(6.dp))
-//                Icon(
-//                    imageVector = Icons.Default.AccessTime,
-//                    contentDescription = null,
-//                    tint = MaterialTheme.colorScheme.onBackground
-//                )
-//                Spacer(modifier = Modifier.width(6.dp))
-//                Text(
-//                    text = article.publishedAt ?: "",
-//                    style = MaterialTheme.typography.bodyMedium,
-//                    color = MaterialTheme.colorScheme.onBackground,
-//                )
-
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
                     imageVector = if (article.isBookmarked)
@@ -196,14 +176,6 @@ fun NewsCard(
                 //   .align(Alignment.End)
             )
         }
-
-        // Spacer(modifier = Modifier.height(8.dp))
-
-//        Text(
-//            text = article.content ?: "",
-//            style = MaterialTheme.typography.bodyMedium,
-//            color = MaterialTheme.colorScheme.onBackground,
-//        )
     }
 }
 
