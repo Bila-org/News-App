@@ -38,15 +38,12 @@ class NewsNotificationWorker(
             Result.success()
         }
     }
-
     private fun showNotification() {
         val channelId = "news_channel"
         val notificationId = 1
-
         createNotificationChannel(channelId)
 
         val intent = Intent(applicationContext, MainActivity::class.java)
-
         val pendingIntent = PendingIntent.getActivity(
             applicationContext,
             0,
@@ -60,10 +57,7 @@ class NewsNotificationWorker(
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
-//            .setCategory(NotificationCompat.CATEGORY_RECOMMENDATION)
-//            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .build()
-
         notificationManager.notify(notificationId, notification)
     }
 
@@ -74,8 +68,6 @@ class NewsNotificationWorker(
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             description = "News notifications"
-//                enableVibration(true)
-//                setShowBadge(true)
         }
         notificationManager.createNotificationChannel(channel)
     }

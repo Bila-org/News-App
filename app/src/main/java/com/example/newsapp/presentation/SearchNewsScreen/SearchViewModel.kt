@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.newsapp.data.dto.Article
+import com.example.newsapp.data.local.EntityArticle
 import com.example.newsapp.domain.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 
 data class SearchUiState(
-    val searchedNews: Flow<PagingData<Article>>? = null,
+    val searchedNews: Flow<PagingData<EntityArticle>>? = null,
     val isLoading: Boolean = false,
     val errorMessage: String? = null
 )
@@ -42,13 +42,13 @@ class SearchViewModel @Inject constructor(
         )
     }
 
-    fun toggleBookmarkArticle(article: Article) {
+    fun toggleBookmarkArticle(article: EntityArticle) {
         viewModelScope.launch {
             newsRepository.toggleBookmarkArticle(article)
         }
     }
 
-    fun addToBookmarkArticle(article: Article) {
+    fun addToBookmarkArticle(article: EntityArticle) {
         viewModelScope.launch {
             newsRepository.addToBookmarkArticle(article)
         }

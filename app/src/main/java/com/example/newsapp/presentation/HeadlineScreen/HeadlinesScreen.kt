@@ -11,15 +11,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavBackStackEntry
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.newsapp.data.dto.Article
+import com.example.newsapp.data.local.EntityArticle
 import com.example.newsapp.presentation.common.components.ArticleList
 
 @Composable
 fun HeadlinesNewsScreen(
     viewModel: HeadlinesViewModel,
     backStackEntry: NavBackStackEntry,
-    onArticleClick: (Article) -> Unit,
-    onBookmarkClick: (Article) -> Unit,
+    onArticleClick: (EntityArticle) -> Unit,
+    onBookmarkClick: (EntityArticle) -> Unit,
     modifier: Modifier = Modifier
 ) {
 

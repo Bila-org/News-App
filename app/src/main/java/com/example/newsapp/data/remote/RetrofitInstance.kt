@@ -10,7 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitInstance {
     companion object{
-
         private val retrofit by lazy{
             val logging = HttpLoggingInterceptor()
 

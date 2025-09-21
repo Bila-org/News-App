@@ -1,45 +1,69 @@
 package com.example.newsapp.data.repository
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.newsapp.data.dto.Article
+import androidx.paging.map
 import com.example.newsapp.data.local.ArticleDatabase
+import com.example.newsapp.data.local.EntityArticle
+import com.example.newsapp.data.mapper.ArticleMapper
 import com.example.newsapp.data.paging.SearchNewsPagingSource
 import com.example.newsapp.data.paging.TopHeadlinesPagingSource
 import com.example.newsapp.domain.NewsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class NewsRepositoryImp(
-    val db: ArticleDatabase,
+    private val db: ArticleDatabase,
     private val sharedPreferences: SharedPreferences
 ) : NewsRepository {
 
     companion object {
-        private const val CACHE_DURATION_MS = 60 * 60 * 1000 // 1 hour
+        private const val CACHE_DURATION_MS = 5 * 60 * 1000 // 5 minutes
         private const val PREFS_KEY_LAST_FETCH = "lastFetchTime"
     }
 
+
     override fun getTopHeadlines(
-        countryCode: String
-    ): Flow<PagingData<Article>> {
-        return Pager(
-            config = PagingConfig(pageSize = 10),
-            pagingSourceFactory = {
-                TopHeadlinesPagingSource(
-                    countryCode = countryCode
+        countryCode: String,
+    ): Flow<PagingData<EntityArticle>> {
+        if (shouldFetchFromApi()) {
+            sharedPreferences.edit {
+                putLong(
+                    PREFS_KEY_LAST_FETCH,
+                    System.currentTimeMillis()
                 )
             }
-        ).flow
+            return Pager(
+                config = PagingConfig(pageSize = 10),
+                pagingSourceFactory = {
+                    TopHeadlinesPagingSource(
+                        countryCode = countryCode,
+                        db = db
+                    )
+                }
+            ).flow.map { pagingData ->
+                pagingData.map {
+                    ArticleMapper.toEntity(it)
+                }
+            }
+        } else {
+            return Pager(
+                config = PagingConfig(pageSize = 10),
+                pagingSourceFactory = {
+                    db.getArticleDao().pagingSource()
+                }
+            ).flow
+        }
     }
-
 
     override fun searchForNews(
         searchQuery: String,
-    ): Flow<PagingData<Article>> {
+    ): Flow<PagingData<EntityArticle>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {
@@ -47,34 +71,36 @@ class NewsRepositoryImp(
                     searchQuery = searchQuery
                 )
             }
-        ).flow
+        ).flow.map { pagingData ->
+            pagingData.map {
+                ArticleMapper.toEntity(it)
+            }
+        }
     }
 
 
-    override fun getBookmarkedArticles(): Flow<List<Article>> {
+    override fun getBookmarkedArticles(): Flow<List<EntityArticle>> {
         return db.getArticleDao().getBookmarkedArticles()
     }
 
-    override suspend fun toggleBookmarkArticle(article: Article) {
+    override suspend fun toggleBookmarkArticle(article: EntityArticle) {
         withContext(Dispatchers.IO) {
             db.getArticleDao().upsert(article.copy(isBookmarked = !article.isBookmarked))
         }
     }
 
-    override suspend fun addToBookmarkArticle(article: Article) {
+    override suspend fun addToBookmarkArticle(article: EntityArticle) {
         withContext(Dispatchers.IO) {
             db.getArticleDao().upsert(article.copy(isBookmarked = true))
         }
     }
 
 
-    override suspend fun deleteArticle(article: Article) {
-        withContext(Dispatchers.IO)
-        {
+    override suspend fun deleteArticle(article: EntityArticle) {
+        withContext(Dispatchers.IO) {
             db.getArticleDao().deleteArticle(article)
         }
     }
-
 
     private fun shouldFetchFromApi(): Boolean {
         val lastFetchTime = sharedPreferences.getLong(PREFS_KEY_LAST_FETCH, 0)

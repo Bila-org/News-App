@@ -41,15 +41,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.newsapp.data.dto.Article
 import com.example.newsapp.data.dto.Source
+import com.example.newsapp.data.local.EntityArticle
 import com.example.newsapp.ui.theme.NewsAppTheme
 import kotlin.math.roundToInt
 
 
 @Composable
 fun NewsCard(
-    article: Article,
+    article: EntityArticle,
     onArticleClick: () -> Unit,
     onBookmarkClick: () -> Unit,
     swipeToDelete: () -> Unit = {},
@@ -193,7 +193,7 @@ fun NewsCard(
 fun NewsCardPreview() {
     NewsAppTheme(dynamicColor = false) {
         NewsCard(
-            article = Article(
+            article = EntityArticle(
                 author = "Buck Throckmorton",
                 content = "And then there is Rivian. Not only is it not gaining sales from disaffected Tesla shoppers, but its sales are going the wrong way…rapidly. Having sold right at 50,000 units each of the past two full … [+913 chars]",
                 description = "2025 has been a disaster for the electric vehicle industry in the United States. But as bad as it’s been, it just got a lot worse. As I documented a few days ago, The One Big Beautiful Bill that...",

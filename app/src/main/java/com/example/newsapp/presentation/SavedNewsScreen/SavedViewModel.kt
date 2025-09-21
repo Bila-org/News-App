@@ -3,7 +3,7 @@ package com.example.newsapp.presentation.SavedNewsScreen
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.data.dto.Article
+import com.example.newsapp.data.local.EntityArticle
 import com.example.newsapp.domain.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 
 data class SavedUiState(
-    val bookMarkedArticles: List<Article> = emptyList(),
+    val bookMarkedArticles: List<EntityArticle> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null
 )
@@ -41,20 +41,20 @@ class SavedViewModel @Inject constructor(
     }
 
 
-    fun toggleBookmarkArticle(article: Article) {
+    fun toggleBookmarkArticle(article: EntityArticle) {
         viewModelScope.launch {
             newsRepository.toggleBookmarkArticle(article)
         }
     }
 
-    fun addToBookmarkArticle(article: Article) {
+    fun addToBookmarkArticle(article: EntityArticle) {
         viewModelScope.launch {
             newsRepository.addToBookmarkArticle(article)
         }
     }
 
 
-    fun deleteArticle(article: Article) {
+    fun deleteArticle(article: EntityArticle) {
         viewModelScope.launch {
             newsRepository.deleteArticle(article)
         }

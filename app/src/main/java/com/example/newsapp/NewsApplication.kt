@@ -8,6 +8,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.newsapp.presentation.notification.NewsNotificationWorker
 import dagger.hilt.android.HiltAndroidApp
+import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 @HiltAndroidApp
@@ -20,12 +21,23 @@ class NewsApplication : Application() {
             .setRequiresBatteryNotLow(true)
             .build()
 
+        val calendar = Calendar.getInstance().apply{
+            set(Calendar.HOUR_OF_DAY, 9)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND,0)
+            set(Calendar.MILLISECOND,0)
+            if(before(Calendar.getInstance())){
+                add(Calendar.DATE, 1)
+            }
+        }
+        val initialDelay = calendar.timeInMillis - System.currentTimeMillis()
+
         val notificationWorkRequest = PeriodicWorkRequestBuilder<NewsNotificationWorker>(
             1,
             TimeUnit.DAYS,
         )
             .setConstraints(constraints)
-            .setInitialDelay(5, TimeUnit.MINUTES)
+//            .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS) // comment for testing
             .build()
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
