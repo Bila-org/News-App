@@ -23,7 +23,4 @@ External Browser Support – Opens links in Chrome or provides fallback options.
 
 ScreenShots
 
-![detailedNews](https://github.com/user-attachments/assets/a3949115-1f6b-42b6-92a5-0d0090f193d0)
-![searchNews](https://github.com/user-attachments/assets/a2390d89-de2d-426c-911a-ebc596b56e75)
-![savedNews](https://github.com/user-attachments/assets/34f001ec-633f-4948-96b7-4a9bf15e5063)
-![headlinesNews](https://github.com/user-attachments/assets/29c17b91-65bd-41e5-9fe1-b6fadc3303ef)
+<img width="2850" height="1600" alt="MainPage" src="https://github.com/user-attachments/assets/408cca81-8bce-4483-a37d-d24cb17ba4e5" />
