@@ -5,8 +5,8 @@ import androidx.paging.PagingState
 import com.example.newsapp.data.dto.Article
 import com.example.newsapp.data.local.ArticleDatabase
 import com.example.newsapp.data.local.EntityArticle
-import com.example.newsapp.data.remote.RetrofitInstance
 import com.example.newsapp.data.mapper.ArticleMapper
+import com.example.newsapp.data.remote.RetrofitInstance
 import kotlin.math.ceil
 
 class TopHeadlinesPagingSource(
@@ -25,7 +25,7 @@ class TopHeadlinesPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val page = params.key ?: 1
         return try {
-            val response = RetrofitInstance.Companion.api.fetchTopHeadlines(countryCode, page)
+            val response = RetrofitInstance.api.fetchTopHeadlines(countryCode, page)
             if (response.isSuccessful) {
                 response.body()?.let { newsResponse ->
                     val articles = newsResponse.articles.distinctBy { it.url }

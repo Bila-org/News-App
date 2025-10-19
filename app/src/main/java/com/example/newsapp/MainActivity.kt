@@ -8,6 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.work.Constraints
@@ -52,7 +54,7 @@ class MainActivity : ComponentActivity() {
         mainViewModel.onPermissionResult(isGranted)
 
         setContent {
-            NewsAppTheme(dynamicColor = false) {
+            NewsAppTheme() {
                 val notificationPermissionState = mainViewModel.notificationPermissionState
 
                 NewsAppMain(
@@ -66,11 +68,12 @@ class MainActivity : ComponentActivity() {
                                 notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
                             }
                         } else {
-                            mainViewModel.onPermissionResult(true)  // Permission granted by default in android 12 and below
+                            mainViewModel.onPermissionResult(true)  // Permission granted by default below android 13
                             scheduleNotifications()
                         }
                     },
                     isNotificationEnabled = notificationPermissionState.value,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
@@ -79,14 +82,11 @@ class MainActivity : ComponentActivity() {
     private fun scheduleNotifications() {
 
         val workManager = WorkManager.getInstance(this)
-
         lifecycleScope.launch {
             val future: ListenableFuture<List<WorkInfo>> =
                 workManager.getWorkInfosForUniqueWork("news_notification")
 
-            val workInfos =
-                future.get()  // This blocks briefly but is safe here as it's a fast local query
-
+            val workInfos = future.get()
             if (workInfos.isNotEmpty())
                 return@launch
 

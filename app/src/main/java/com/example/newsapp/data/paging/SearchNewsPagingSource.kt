@@ -21,7 +21,7 @@ class SearchNewsPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val page = params.key ?: 1
         return try {
-            val response = RetrofitInstance.Companion.api.searchForNews(searchQuery, page)
+            val response = RetrofitInstance.api.searchForNews(searchQuery, page)
             if (response.isSuccessful) {
                 response.body()?.let { newsResponse ->
                     val articles = newsResponse.articles.distinctBy { it.url }

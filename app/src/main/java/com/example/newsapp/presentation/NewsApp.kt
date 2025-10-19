@@ -8,10 +8,10 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -43,6 +43,19 @@ fun NewsAppMain(
     val snackbarHostState = remember { SnackbarHostState() }
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(isNotificationEnabled) {
+        if (isNotificationEnabled) {
+            scope.launch {
+                snackbarHostState
+                    .showSnackbar(
+                        message = "Notifications are enabled",
+                        duration = SnackbarDuration.Short
+                    )
+            }
+        }
+    }
+
 
     Scaffold(
         topBar = {
@@ -79,16 +92,14 @@ fun NewsAppMain(
         ) {
             composable(Screen.Headlines.route) {
                 val viewModel: HeadlinesViewModel = hiltViewModel()
-                val context = LocalContext.current
                 HeadlinesNewsScreen(
-                    viewModel,
+                    uiState = viewModel.uiState.value,
                     onArticleClick = { article ->
                         val encodedUrl =
                             URLEncoder.encode(article.url, StandardCharsets.UTF_8.toString())
                         navController.navigate(
                             "${Screen.DetailNews.route}/${encodedUrl}"
                         )
-//                        OpenArticleInBrowser.launch(context, article.url)
                     },
                     onBookmarkClick = { article ->
                         viewModel.addToBookmarkArticle(article)
@@ -105,7 +116,6 @@ fun NewsAppMain(
 
             composable(Screen.Saved.route) {
                 val viewModel: SavedViewModel = hiltViewModel()
-                val context = LocalContext.current
                 SavedNewsScreen(
                     uiState = viewModel.uiState.value,
                     onArticleClick = { article ->
@@ -114,7 +124,6 @@ fun NewsAppMain(
                         navController.navigate(
                             "${Screen.DetailNews.route}/${encodedUrl}"
                         )
-//                        OpenArticleInBrowser.launch(context, article.url)
                     },
                     onBookmarkClick = { article ->
                         viewModel.deleteArticle(article)
@@ -159,7 +168,6 @@ fun NewsAppMain(
 
             composable(Screen.Search.route) {
                 val viewModel: SearchViewModel = hiltViewModel()
-                val context = LocalContext.current
                 SearchNewsScreen(
                     uiState = viewModel.uiState.value,
                     onArticleClick = { article ->
@@ -168,7 +176,6 @@ fun NewsAppMain(
                         navController.navigate(
                             "${Screen.DetailNews.route}/${encodedUrl}"
                         )
-//                        OpenArticleInBrowser.launch(context, article.url)
                     },
                     onBookmarkClick = { article ->
                         viewModel.addToBookmarkArticle(article)

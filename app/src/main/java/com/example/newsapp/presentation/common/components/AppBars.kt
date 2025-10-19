@@ -151,9 +151,11 @@ fun AppTopBarPreview() {
 @Composable
 fun AppBottomNavigationBarPreview() {
     NewsAppTheme(darkTheme = false) {
+        val navController = rememberNavController()
+    //    navController.navigate(Screen.Headlines.route)
         AppBottomNavigationBar(
             onClick = { },
-            navController = rememberNavController()
+            navController = navController
         )
     }
 }

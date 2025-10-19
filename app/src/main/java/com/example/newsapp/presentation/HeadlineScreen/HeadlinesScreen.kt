@@ -16,13 +16,11 @@ import com.example.newsapp.presentation.common.components.ArticleList
 
 @Composable
 fun HeadlinesNewsScreen(
-    viewModel: HeadlinesViewModel,
+    uiState: HeadlinesUiState,
     onArticleClick: (EntityArticle) -> Unit,
     onBookmarkClick: (EntityArticle) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    val uiState = viewModel.uiState.value
 
     Column(
         modifier = modifier
