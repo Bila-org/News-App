@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class NewsRepositoryImp(
+class NewsRepositoryImpl(
     private val db: ArticleDatabase,
     private val sharedPreferences: SharedPreferences
 ) : NewsRepository {

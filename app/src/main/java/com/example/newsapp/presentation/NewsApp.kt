@@ -2,30 +2,22 @@ package com.example.newsapp.presentation.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.newsapp.R
+import androidx.navigation.navArgument
 import com.example.newsapp.presentation.HeadlineScreen.HeadlinesNewsScreen
 import com.example.newsapp.presentation.HeadlineScreen.HeadlinesViewModel
 import com.example.newsapp.presentation.SavedNewsScreen.SavedNewsScreen
@@ -33,13 +25,19 @@ import com.example.newsapp.presentation.SavedNewsScreen.SavedViewModel
 import com.example.newsapp.presentation.SearchNewsScreen.SearchNewsScreen
 import com.example.newsapp.presentation.SearchNewsScreen.SearchViewModel
 import com.example.newsapp.presentation.common.components.AppBottomNavigationBar
-import com.example.newsapp.presentation.common.components.OpenArticleInBrowser
+import com.example.newsapp.presentation.common.components.AppTopBar
 import com.example.newsapp.presentation.common.components.Screen
+import com.example.newsapp.presentation.common.components.WebViewScreen
 import kotlinx.coroutines.launch
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsAppMain(
+    onNotificationEnableClick: () -> Unit,
+    isNotificationEnabled: Boolean,
     modifier: Modifier = Modifier
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -48,22 +46,11 @@ fun NewsAppMain(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.app_title),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        fontStyle = FontStyle.Italic,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
+            AppTopBar(
+                onClick = {
+                    onNotificationEnableClick()
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
-                )
+                isNotificationEnabled = isNotificationEnabled
             )
         },
         bottomBar = {
@@ -90,14 +77,18 @@ fun NewsAppMain(
             startDestination = Screen.Headlines.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Headlines.route) { backStackEntry ->
-                val viewModel: HeadlinesViewModel = hiltViewModel(backStackEntry)
+            composable(Screen.Headlines.route) {
+                val viewModel: HeadlinesViewModel = hiltViewModel()
                 val context = LocalContext.current
                 HeadlinesNewsScreen(
                     viewModel,
-                    backStackEntry,
                     onArticleClick = { article ->
-                        OpenArticleInBrowser.launch(context, article.url)
+                        val encodedUrl =
+                            URLEncoder.encode(article.url, StandardCharsets.UTF_8.toString())
+                        navController.navigate(
+                            "${Screen.DetailNews.route}/${encodedUrl}"
+                        )
+//                        OpenArticleInBrowser.launch(context, article.url)
                     },
                     onBookmarkClick = { article ->
                         viewModel.addToBookmarkArticle(article)
@@ -118,7 +109,12 @@ fun NewsAppMain(
                 SavedNewsScreen(
                     uiState = viewModel.uiState.value,
                     onArticleClick = { article ->
-                        OpenArticleInBrowser.launch(context, article.url)
+                        val encodedUrl =
+                            URLEncoder.encode(article.url, StandardCharsets.UTF_8.toString())
+                        navController.navigate(
+                            "${Screen.DetailNews.route}/${encodedUrl}"
+                        )
+//                        OpenArticleInBrowser.launch(context, article.url)
                     },
                     onBookmarkClick = { article ->
                         viewModel.deleteArticle(article)
@@ -167,7 +163,12 @@ fun NewsAppMain(
                 SearchNewsScreen(
                     uiState = viewModel.uiState.value,
                     onArticleClick = { article ->
-                        OpenArticleInBrowser.launch(context, article.url)
+                        val encodedUrl =
+                            URLEncoder.encode(article.url, StandardCharsets.UTF_8.toString())
+                        navController.navigate(
+                            "${Screen.DetailNews.route}/${encodedUrl}"
+                        )
+//                        OpenArticleInBrowser.launch(context, article.url)
                     },
                     onBookmarkClick = { article ->
                         viewModel.addToBookmarkArticle(article)
@@ -181,6 +182,25 @@ fun NewsAppMain(
                     },
                     onSearchQuery = { query ->
                         viewModel.searchForNews(query)
+                    }
+                )
+            }
+
+
+            composable(
+                route = "${Screen.DetailNews.route}/{articleUrl}",
+                arguments = listOf(
+                    navArgument("articleUrl") {
+                        type = NavType.StringType
+                    }
+                )
+            ) {
+                val encodedUrl = it.arguments?.getString("articleUrl") ?: ""
+                val articleUrl = URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8.toString())
+                WebViewScreen(
+                    articleUrl = articleUrl,
+                    onBackPressed = {
+                        navController.navigateUp()
                     }
                 )
             }

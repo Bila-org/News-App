@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.newsapp.data.local.ArticleDatabase
-import com.example.newsapp.data.repository.NewsRepositoryImp
+import com.example.newsapp.data.repository.NewsRepositoryImpl
 import com.example.newsapp.domain.NewsRepository
 import dagger.Module
 import dagger.Provides
@@ -46,7 +46,7 @@ object AppModule {
         db: ArticleDatabase,
         sharedPreferences: SharedPreferences
     ): NewsRepository {
-        return NewsRepositoryImp(db, sharedPreferences)
+        return NewsRepositoryImpl(db, sharedPreferences)
     }
 
 

@@ -17,23 +17,12 @@ import com.example.newsapp.presentation.common.components.ArticleList
 @Composable
 fun HeadlinesNewsScreen(
     viewModel: HeadlinesViewModel,
-    backStackEntry: NavBackStackEntry,
     onArticleClick: (EntityArticle) -> Unit,
     onBookmarkClick: (EntityArticle) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     val uiState = viewModel.uiState.value
-
-    DisposableEffect(backStackEntry) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_START) {
-                viewModel.getTopHeadlines()
-            }
-        }
-        backStackEntry.lifecycle.addObserver(observer)
-        onDispose { backStackEntry.lifecycle.removeObserver(observer) }
-    }
 
     Column(
         modifier = modifier

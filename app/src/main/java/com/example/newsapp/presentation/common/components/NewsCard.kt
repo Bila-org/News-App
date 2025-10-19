@@ -66,7 +66,7 @@ fun NewsCard(
 
     Column(
         modifier = modifier
-            .padding(16.dp)
+            .padding(vertical = 8.dp,horizontal = 16.dp)
             .clickable {
                 onArticleClick()
             }
